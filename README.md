@@ -14,17 +14,16 @@
 2. testScript.py >> เป็นไฟล์ตรวจคำตอบ
 3. HW3_utils.py >> Forward Kinematic function ที่โจทย์ให้มา
 
-## รันไฟล์คำตอบ (FRA333_HW3_6572_6578.py)
-Input ที่ใส่
-
-
-
-Output ที่ได้
-
+## ไฟล์คำตอบ (FRA333_HW3_6572_6578.py)
+ประกอบด้วย function
+1. J_e = endEffectorJacobianHW3(q)
+2. flag = checkSingularityHW3(q)
+3. tau = computeEffortHW3(q, w)
 
 ## รันไฟล์ตรวจคำตอบ (testScript.py)
 Input ที่ใส่
 
+![messageImage_1728837292479](https://github.com/65340500072/FRA333_HW3_6572_6578/blob/main/Input%20value.png)
 
 - นำเข้าไฟล์คำตอบ (FRA333_HW3_6572_6578.py) เพื่อนำข้อมูลมาตรวจสอบ
 
@@ -32,13 +31,16 @@ Input ที่ใส่
 
 Output ที่ได้
 ข้อที่ 1
+
 ![messageImage_1728837292479](https://github.com/user-attachments/assets/43588fdf-adec-41e2-aa06-831250b55641)
 
 
 ข้อที่ 2
+
 ![messageImage_1728837292479](https://github.com/user-attachments/assets/4155b307-53de-4d1f-9674-6c28d20b3dbd)
 
 
 ข้อที่ 3
+
 ![S__13975558](https://github.com/user-attachments/assets/f0431d66-c849-4165-9c74-5de71ac6154e)
 

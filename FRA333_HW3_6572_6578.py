@@ -10,46 +10,35 @@ import sympy as sp
 import math
 import roboticstoolbox as rtb
 
-from spatialmath import SE3
+
 from math import pi
-#=============================================<function>======================================================#
-# Transformation matrix function
-def transform(a, alpha, d, theta):
-    return sp.Matrix([[sp.cos(theta), -sp.sin(theta), 0, a],
-                      [sp.sin(theta) * sp.cos(alpha), sp.cos(theta) * sp.cos(alpha), -sp.sin(alpha), -sp.sin(alpha) * d],
-                      [sp.sin(theta) * sp.sin(alpha), sp.cos(theta) * sp.sin(alpha), sp.cos(alpha), sp.cos(alpha) * d],
-                      [0, 0, 0, 1]])
+from HW3_utils import FKHW3
+
+
 #=============================================<คำตอบข้อ 1>======================================================#
 #code here
-def endEffectorJacobianHW3(q_1, q_2, q_3):
-    z = []
-    p = []
+def endEffectorJacobianHW3(q):
+    R,P,R_e,p_e = FKHW3(q)
+
+    p0_1 = sp.Matrix(P[:,0]) # ตำแหน่งเฟรม 1 ที่สัมพัทธ์กับเฟรม 0
+    p0_2 = sp.Matrix(P[:,1]) # ตำแหน่งเฟรม 2 ที่สัมพัทธ์กับเฟรม 0
+    p0_3 = sp.Matrix(P[:,2]) # ตำแหน่งเฟรม 3 ที่สัมพัทธ์กับเฟรม 0
+    p0_e = sp.Matrix(p_e)    # ตำแหน่งของ end-effector ที่สัมพัทธ์กับเฟรม 0
+    p = [p0_1, p0_2, p0_3]
+    
+    # แกนหมุนของแต่ละข้อต่อ
+    z1 = sp.Matrix([0, 0, 1])
+    z2 = sp.Matrix([sp.sin(q[0]), -sp.cos(q[0]), 0])
+    z3 = sp.Matrix([sp.sin(q[0]), -sp.cos(q[0]), 0])
+    z = [z1, z2, z3]
+    
     Jv = []
     Jw = []
-    d_1 = 0.0892
-    a_2 = 0.425
-    a_3 = 0.39243
-    d_4 = 0.109
-    d_5 = 0.093
-    d_6 = 0.082
     
-    T0_1 = transform(0, 0, d_1, q_1)
-    T1_2 = transform(0, sp.pi/2, 0, q_2) 
-    T2_3 = transform(-a_2, 0, 0, q_3)
-    T3_e = transform(-a_3, 0, 0, 0)*transform(0, 0, d_4, 0)*transform(-(sp.pi/2), 0, d_5, sp.pi/2)*transform(-(sp.pi/2), 0, d_6, 0)
-    
-    T_total = T0_1 * T1_2 * T2_3 * T3_e
-    
-    p_end = T_total[:3, 3]
-    
-    T_matrices = [T0_1, T0_1 * T1_2, T0_1 * T1_2 * T2_3]
-    for T in T_matrices:
-        z.append(T[:3, 2])
-        p.append(T[:3, 3])
-        
     for i in range(3):
+        
         # Jacobian เชิงเส้น
-        Jv_i = z[i].cross(p_end - p[i])
+        Jv_i = z[i].cross(p0_e - p[i])
         Jv.append(Jv_i)
     
         # Jacobian เชิงมุม
@@ -60,16 +49,50 @@ def endEffectorJacobianHW3(q_1, q_2, q_3):
     Jv_matrix = sp.Matrix.hstack(*Jv)
     Jw_matrix = sp.Matrix.hstack(*Jw)
     Jacobian = sp.Matrix.vstack(Jv_matrix, Jw_matrix)
+    
+    # ลดรูป Jacobian
     J_e = sp.simplify(Jacobian) 
-    return J_e                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    J = np.array(J_e).astype(np.float64)
+    return J                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 2>======================================================#
 #code here
-def checkSingularityHW3(q:list[float])->bool:
-    return flag
+def checkSingularityHW3(q):
+    # Jacobian matrix
+    J_e = endEffectorJacobianHW3(q)
+    
+    # กำหนดค่า ε
+    E = 0.001
+    
+    # แปลง sympy เป็น numpy
+    J = np.array(J_e).astype(np.float64)
+    
+    # หา det ของ Jacobian
+    det_J = np.linalg.det(J[:3, :])
+    print("det(J*(q)) = ", det_J)
+    
+    # เช็กว่าเกิดสถาวะ Singularity หรือไม่
+    if(abs(det_J)<E):
+        print("Singularity:")
+        return True
+    elif(abs(det_J)>E):
+        print("Singularity:")
+        return False
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
-def computeEffortHW3(q:list[float], w:list[float])->list[float]:
+def computeEffortHW3(q, w):
+    # Jacobian matrix
+    J_e = endEffectorJacobianHW3(q)
+    
+    # แปลง sympy เป็น numpy
+    J = np.array(J_e).astype(np.float64)
+    
+    # Jacobian Transpose 
+    J_T = np.transpose(J)
+    
+    # หา effort ของแต่ละข้อต่อเมื่อมี wrench มากระทำกับ end-effector
+    tau = J_T @ w
+   
     return tau
 #==============================================================================================================#

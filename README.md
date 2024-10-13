@@ -32,10 +32,13 @@ Input ที่ใส่
 
 Output ที่ได้
 ข้อที่ 1
-[![image](![messageImage_1728837292479](https://github.com/user-attachments/assets/43588fdf-adec-41e2-aa06-831250b55641)
-)]
+![messageImage_1728837292479](https://github.com/user-attachments/assets/43588fdf-adec-41e2-aa06-831250b55641)
 
 
+ข้อที่ 2
+![messageImage_1728837292479](https://github.com/user-attachments/assets/4155b307-53de-4d1f-9674-6c28d20b3dbd)
 
 
+ข้อที่ 3
+![S__13975558](https://github.com/user-attachments/assets/f0431d66-c849-4165-9c74-5de71ac6154e)
 

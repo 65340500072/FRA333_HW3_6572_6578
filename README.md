@@ -31,7 +31,9 @@ Input ที่ใส่
 ใช้ Roboticstoolbox ในหา jacobian จาก Model ที่สร้าง เพื่อนำมาเทียบกับฟังก์ชั่นที่สร้างเอง
 
 Output ที่ได้
-
+ข้อที่ 1
+[![image](![messageImage_1728837292479](https://github.com/user-attachments/assets/43588fdf-adec-41e2-aa06-831250b55641)
+)]
 
 
 

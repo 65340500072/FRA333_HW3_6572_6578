@@ -66,17 +66,17 @@ def checkSingularityHW3(q):
     
     # แปลง sympy เป็น numpy
     J = np.array(J_e).astype(np.float64)
-    
+    print(J)
     # หา det ของ Jacobian
     det_J = np.linalg.det(J[:3, :])
-    print("det(J*(q)) = ", det_J)
+    # print("det(J*(q)) = ", det_J) # เช็กค่า det(J*(q))
     
     # เช็กว่าเกิดสถาวะ Singularity หรือไม่
     if(abs(det_J)<E):
-        print("Singularity:")
+        # print("Singularity:")
         return True
     elif(abs(det_J)>E):
-        print("Singularity:")
+        # print("Singularity:")
         return False
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
@@ -90,7 +90,6 @@ def computeEffortHW3(q, w):
     
     # Jacobian Transpose 
     J_T = np.transpose(J)
-    
     # หา effort ของแต่ละข้อต่อเมื่อมี wrench มากระทำกับ end-effector
     tau = J_T @ w
    
